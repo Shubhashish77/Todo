@@ -5,7 +5,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { MyContext } from '../../context';
-
+import { getCurrentDate } from '../../utils/tools'
 const Container = styled.div`
     width: 100%;
 `;
@@ -65,6 +65,25 @@ const ListContainer = styled.div`
     flex-direction: column;
 `;
 
+const DateContainer = styled.div`
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 20px;
+`;
+
+const Item = styled.div`
+   font-family: 'Comfortaa', cursive;
+   font-size: 20px;
+   font-weight: 700;
+   color: green;
+   background-color: #fff;
+   padding: 10px;
+   border-radius: 10px;
+box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+`
+
 const ListWrapper = styled.div`
     width: 90%;
     display: flex;
@@ -93,6 +112,7 @@ const SubtaskContainer = styled.div`
     ${'' /* justify-content: center; */}
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     ${'' /* padding: 10px; */}
+ 
 `;
 
 const SubTask = styled.div`
@@ -102,6 +122,7 @@ const SubTask = styled.div`
     ${'' /* justify-content: center; */}
     ${'' /* border-bottom: 1px solid gray; */}
     ${'' /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */}
+       background-color: #f5f6fa;
 `;
 
 const Task = styled.span`
@@ -112,6 +133,7 @@ const Todolist = () => {
     const [task, setTask] = useState("");
     const [subTask, setSubtask] = useState("");
     const [open, setOpen] = useState(-1);
+    const [done,setDone] = useState([]);
     const context = useContext(MyContext);
     console.log(context.state);
 
@@ -130,9 +152,12 @@ const Todolist = () => {
         console.log("delete");
         context.handleTaskDel(task);
     }
+
+    const data = getCurrentDate();
     return (
         <Container>
             <Wrapper>
+            
                 <NoteContainer onSubmit={handleTaskSubmit}>
                     <Input
                         type="text"
@@ -144,8 +169,13 @@ const Todolist = () => {
                     />
                     <Button type='submit'>ADD</Button>
                 </NoteContainer> 
+                <DateContainer>
+                    <Item>{data.day}</Item>
+                    <Item>{data.date}</Item>
+                </DateContainer>
                 <ListContainer>
-                    
+
+                    <DateContainer></DateContainer>
                         {context.state.todo && context.state.todo.length > 0 ? ( context.state.todo.map((item, idx)=>(
                             <ListWrapper key={idx}>
                                 <ListItem >    
@@ -179,8 +209,6 @@ const Todolist = () => {
                                 ): ""}
                             </ListWrapper>
                         ))): "" }               
-                    
-
                 </ListContainer>
             </Wrapper>
         </Container>
